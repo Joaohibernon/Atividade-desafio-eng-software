@@ -1,0 +1,61 @@
+class Book {
+    constructor(title, description, author) {
+        this.id = Book.generateId();  
+        this.title = title;
+        this.description = description;
+        this.author = author;
+    }
+
+    static generateId() {
+        return Math.random().toString(36).substr(2, 9);
+    }
+}
+
+class Library {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(bookInfo) {
+        const newBook = new Book(bookInfo.title, bookInfo.description, bookInfo.author);
+        this.books.push(newBook);
+        return newBook;
+    }
+
+    getBooks() {
+        return this.books;
+    }
+
+    removeBookById(id) {
+        this.books = this.books.filter(book => book.id !== id);
+    }
+
+    getBookById(id) {
+        return this.books.find(book => book.id === id);
+    }
+
+    updateBookById(id, info) {
+        const book = this.getBookById(id);
+        if (book) {
+            if (info.title) book.title = info.title;
+            if (info.description) book.description = info.description;
+            if (info.author) book.author = info.author;
+        }
+        return book;
+    }
+}
+
+const library = new Library();
+
+const book1 = library.addBook({ title: "Livro 1", description: "Descrição 1", author: "Autor 1" });
+const book2 = library.addBook({ title: "Livro 2", description: "Descrição 2", author: "Autor 2" });
+
+console.log(library.getBooks()); 
+
+console.log(library.getBookById(book1.id));
+
+library.updateBookById(book1.id, { title: "Livro 1 Atualizado", description: "Descrição Atualizada" });
+console.log(library.getBookById(book1.id));
+
+library.removeBookById(book2.id);
+console.log(library.getBooks()); 
